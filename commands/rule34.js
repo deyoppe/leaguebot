@@ -47,31 +47,18 @@ function getSmut(champs) {
 }
 
 module.exports = function(bot) {
-	bot.onText(/\/rule34$/, function(msg) {
+	var sendSmut = function(msg, match) {
 		var chatId = msg.chat.id;
 		bot.sendChatAction(chatId, 'upload_photo');
 		
-		getSmut()
+		var searchTerms = match.length > 0 ? match[1].split(',') : [];
+		getSmut(searchTerms)
 		.then(function(smut) {
 			bot.sendPhoto(chatId, smut);
 		});
-	});
+	}
 	
-	bot.onText(/\/rule34 (.*)/, function(msg, match) {
-		var chatId = msg.chat.id;
-		
-		getSmut(match[1].split(','))
-		.then(function(smut) {
-			bot.sendPhoto(chatId, smut);
-		});
-	});
-	
-	bot.onText(/tette/ig, function(msg) {
-		var chatId = msg.chat.id;
-		
-		getSmut()
-		.then(function(smut) {
-			bot.sendPhoto(chatId, smut);
-		});
-	});
+	bot.onText(/\/rule34$/, sendSmut);
+	bot.onText(/\/rule34 (.*)/, sendSmut);
+	bot.onText(/tette/ig, sendSmut);
 }
