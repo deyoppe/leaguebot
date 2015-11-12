@@ -60,7 +60,7 @@ module.exports = function(bot) {
 	bot.onText(/\/rule34 (.*)/, function(msg, match) {
 		var chatId = msg.chat.id;
 		
-		getSmut(match[1])
+		getSmut(match[1].split(','))
 		.then(function(smut) {
 			bot.sendPhoto(chatId, smut);
 		});
