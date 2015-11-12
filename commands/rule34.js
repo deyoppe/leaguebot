@@ -65,4 +65,13 @@ module.exports = function(bot) {
 			bot.sendPhoto(chatId, smut);
 		});
 	});
+	
+	bot.onText(/tette/ig, function(msg, match) {
+		var chatId = msg.chat.id;
+		
+		getSmut(match[1])
+		.then(function(smut) {
+			bot.sendPhoto(chatId, smut);
+		});
+	});
 }
