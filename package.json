@@ -1,0 +1,26 @@
+{
+  "name": "leaguebot",
+  "version": "1.0.0",
+  "description": "League of Legends bot for Telegram",
+  "main": "leaguebot.js",
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "node-telegram-bot-api": "^0.15.0",
+    "request": "^2.65.0",
+    "riot-lol-api": "git+https://git@github.com/deyoppe/riot-lol-api.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deyoppe/leaguebot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deyoppe/leaguebot/issues"
+  },
+  "homepage": "https://github.com/deyoppe/leaguebot#readme"
+}
