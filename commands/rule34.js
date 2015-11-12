@@ -47,7 +47,7 @@ function getSmut(champs) {
 }
 
 module.exports = function(bot) {
-	bot.onText(/\/rule34$/, function(msg, match) {
+	bot.onText(/\/rule34$/, function(msg) {
 		var chatId = msg.chat.id;
 		bot.sendChatAction(chatId, 'upload_photo');
 		
@@ -66,10 +66,10 @@ module.exports = function(bot) {
 		});
 	});
 	
-	bot.onText(/tette/ig, function(msg, match) {
+	bot.onText(/tette/ig, function(msg) {
 		var chatId = msg.chat.id;
 		
-		getSmut(match[1])
+		getSmut()
 		.then(function(smut) {
 			bot.sendPhoto(chatId, smut);
 		});
