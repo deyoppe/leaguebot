@@ -9,17 +9,26 @@ function getSmut(champs) {
 	if(!champs) champs = [];
 	
 	var promise = new Promise(function(resolve, reject) {
-		var tags = _(["league_of_legends"]).concat(champs).value();
+		var tags = _(champs).map(function(tag) {
+			return "*"+tag+"*";
+		}).concat(["league_of_legends"]).join('+');
 		
 		request({
 			baseUrl : baseUrl,
 			url : countUrl,
 			qs : {
-				tags : tags.join('+')
+				tags : tags
+			},
+			qsStringifyOptions : {
+				encode: false
 			}
 		}, function(error, response, bodyCounts) {
 			var pages = JSON.parse(bodyCounts).counts.posts;
 			if(pages > 1000) pages = 1000;
+			if(pages === 0) {
+				reject("Nothing found");
+				return;
+			}
 			
 			var page = Math.round(Math.random()*pages);
 			
@@ -27,9 +36,12 @@ function getSmut(champs) {
 				baseUrl : baseUrl,
 				url : searchUrl,
 				qs : {
-					tags : tags.join('+'),
+					tags : tags,
 					limit : 1,
 					page : page
+				},
+				qsStringifyOptions : {
+					encode: false
 				}
 			}, function(error, response, bodySmut) {
 				var json = JSON.parse(bodySmut);
@@ -55,6 +67,8 @@ module.exports = function(bot) {
 		getSmut(searchTerms)
 		.then(function(smut) {
 			bot.sendPhoto(chatId, smut);
+		}, function(err) {
+			bot.sendMessage(chatId, err);
 		});
 	}
 	
