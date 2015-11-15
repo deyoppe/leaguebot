@@ -44,7 +44,12 @@ function getSmut(champs) {
 				}
 			}, function(error, response, bodySmut) {
 				var json = JSON.parse(bodySmut);
-				var post = _(json).reject({rating : 's'}).sortByAll(['fav_count', 'score']).takeRight(5).sample();
+				var post = _(json).sortBy(function(obj) {
+					var score = 0;
+					if(obj.rating === 'q') score = 1;
+					if(obj.rating === 'e') score = 2;
+					return score;
+				}).sortByAll(['fav_count', 'score']).takeRight(10).sample();
 				var postUrl = post.file_url;
 				var smut = request({
 					baseUrl : baseUrl,

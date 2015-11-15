@@ -50,15 +50,23 @@ require('riot-lol-api')(tokens.riot)
 			.then(function(res) { 
 				api.game.getRecentBySummoner('euw', res[summonerName.replace(/ /g, '')].id)
 				.then(function(res) { 
+					var keyboard = [];
+					res.games.forEach(function(match) {
+						var stats = match.stats;
+						var str = '['+moment(match.createDate).fromNow()+'] ';
+						str += stats.win ? emoji.tada : emoji.sob;
+						str += ' ('+(stats.championsKilled || 0)+'-'+(stats.numDeaths || 0)+'-'+(stats.assists || 0)+') ';
+						str += champions[match.championId].name + ' ';
+						str += '\n';
+						keyboard.push([str]);
+					});
 					bot.sendMessage(fromId, "Which match?", {
 						reply_markup : JSON.stringify({
-							keyboard : [['ayy']],
+							keyboard : keyboard,
 							resize_keyboard : true,
 							selective : true
 						})
 					});
-					
-					
 				});
 			});
 		});
