@@ -9,7 +9,8 @@
     "node-emoji": "^1.0.4",
     "node-telegram-bot-api": "^0.15.0",
     "request": "^2.65.0",
-    "riot-lol-api": "git+https://git@github.com/deyoppe/riot-lol-api.git"
+    "riot-lol-api": "git+https://git@github.com/deyoppe/riot-lol-api.git",
+    "webshot": "^0.16.0"
   },
   "devDependencies": {},
   "scripts": {

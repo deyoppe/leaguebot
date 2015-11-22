@@ -54,6 +54,7 @@ bot.onText(/\/matches (.*)/, function(msg, match) {
 				str += '\n';
 				keyboard.push([str]);
 			});
+			keyboard.push(['/cancel']);
 			bot.sendMessage(fromId, "Which match?", {
 				reply_markup : JSON.stringify({
 					keyboard : keyboard,
@@ -75,3 +76,13 @@ bot.onText(/\/match ([0-9]+)[ ]?(.*)?/, function(msg, match) {
 		console.log(res);
 	});
 });
+
+bot.onText(/\/cancel/, function(msg, match) {
+	var fromId = msg.chat.id;
+	bot.sendMessage(fromId, "Ok", {
+		reply_markup : JSON.stringify({
+			hide_keyboard: true
+		})
+	});
+});
+
