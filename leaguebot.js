@@ -5,6 +5,7 @@ var tokens = require('./cfg/tokens');
 var emoji = require('node-emoji').emoji;
 var _ = require('lodash');
 var moment = require('moment');
+var handlebars = require('handlebars');
 var lol = require('riot-lol-api');
 bot = new TelegramBot(tokens.telegram, {polling: true});
 api = lol.client(tokens.riot)

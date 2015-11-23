@@ -4,6 +4,7 @@
   "description": "League of Legends bot for Telegram",
   "main": "leaguebot.js",
   "dependencies": {
+    "handlebars": "^4.0.5",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "node-emoji": "^1.0.4",
@@ -12,7 +13,10 @@
     "riot-lol-api": "git+https://git@github.com/deyoppe/riot-lol-api.git",
     "webshot": "^0.16.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "express": "^4.13.3",
+    "hbs": "^4.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
