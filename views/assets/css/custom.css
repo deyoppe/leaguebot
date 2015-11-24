@@ -1,0 +1,55 @@
+.breathe {
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+}
+.breathe-lg {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+.inline-block {
+	display: inline-block;
+	vertical-align: top;
+}
+hr {
+	margin-top: 0.5em !important;
+	margin-bottom: 0.5em !important;
+}
+
+.lol-match-summary .panel-body {
+	height: 166px;
+}
+
+.lol-match-summary .panel-body > div {
+	vertical-align: top;
+	height: 166px;
+}
+
+.lol-match-summary .lol-champion-icon {
+	vertical-align: top;
+	width: 138px;
+}
+
+.lol-match-summary .lol-summspells {
+	height: 100px;
+	width: 48px;
+}
+
+.lol-match-summary .lol-summspell {
+	margin-bottom: 2px;
+}
+
+.lol-match-summary .lol-summspell {
+	margin-bottom: 2px;
+}
+
+.lol-icon {
+	width: 48px;
+}
+
+.lol-icon-sm {
+	width: 24px;
+}
+
+.lol-icon-xs {
+	width: 18px;
+}

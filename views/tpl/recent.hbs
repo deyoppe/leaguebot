@@ -1,20 +1,115 @@
 <html>
 	{{> head}}
-	<body>
-		<div class="panel panel-primary">
+	<body class="lol-match-summary">
+		<div class="panel panel-primary inline-block">
 			  <div class="panel-heading">
-					<h3 class="panel-title">Ranked <span class="pull-right">3 days ago</span></h3>
+					<h3 class="panel-title"><strong>Ranked</strong> - 3 days ago
+			  			<span class="pull-right">34:52 - LOSE</span>
+			  		</h3>
 			  </div>
 			  <div class="panel-body">
-			  	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-    				<div class="row">
-			  			<img src="https://ddragon.leagueoflegends.com/cdn/5.22.3/img/champion/Draven.png" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"/>
+  				<img class="inline-block lol-champion-icon lol-icon-lg" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/champion/Draven.png"/>
+			  	<div class="inline-block lol-player-stats breathe-lg">
+			  		<h4>
+			  			<span>
+				  			<strong>{{champion}}</strong>
+				  			<span class="breathe text-success">{{kills}}</span>/<span class="breathe text-danger">{{deaths}}</span>/<span class="breathe">{{assists}}</span>
+				  			<span class="label label-danger">PENTAKILL</span>
+				  		</span>
+				  		<span class="pull-right">
+				  			{{minions}} cs
+				  		</span>
+			  		</h4>
+			  		<div class="inline-block">
+					  	<div class="lol-summspells inline-block">
+					  		<div>
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/spell/SummonerFlash.png"/>
+				  			</div>
+			  				<div>
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/spell/SummonerFlash.png"/>
+				  			</div>
+					  	</div>
+			  			<div class="breathe-lg inline-block">
+			  				<div>
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  			</div>
+			  				<div>
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  			</div>
+			  			</div>
+				  		<div class="inline-block">
+			  				<div>
+				  				<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/3361.png">
+				  			</div>
+				  			<hr>
+			  				<div>
+			  					<div class="lol-icon text-center">
+						  			<img class="lol-icon-sm" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/2043.png"> 
+						  			<strong>2</strong>
+						  		</div>
+				  			</div>
+				  		</div>
 			  		</div>
 			  	</div>
-			  	<div>
-    				<div class="row text-center">
-			  			Fiora
-			  		</div>
+			  	<div class="inline-block lol-team-stats">
+		  			<div class="inline-block">
+		  				<div class="text-center">
+		  					<h4>Ally</h4>
+		  				</div>
+		  				<div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png"> 
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+			  			</div>
+		  			</div>
+	  				<div class="inline-block breathe-lg">
+	  					<div class="text-center">
+	  						<h4>Enemy</h4>
+	  					</div>
+	  					<div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+				  			<div>
+				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
+				  				10/10/10
+				  			</div>
+			  			</div>
+		  			</div>
 			  	</div>
 			  </div>
 		</div>

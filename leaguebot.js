@@ -36,7 +36,7 @@ bot.onText(/\/recent (.*)/, function(msg, match) {
 	});
 });
 
-bot.onText(/\/matches (.*)/, function(msg, match) {
+bot.onText(/\/match (.*)/, function(msg, match) {
 	var fromId = msg.chat.id;
 	bot.sendChatAction(fromId, 'typing');
 	
@@ -48,10 +48,10 @@ bot.onText(/\/matches (.*)/, function(msg, match) {
 			var keyboard = [];
 			res.games.forEach(function(match) {
 				var stats = match.stats;
-				var str = '/match '+match.gameId+' '; 
-				str += stats.win ? emoji.tada : emoji.sob;
+				var str = '/matchid '+match.gameId+' ['; 
+				str += stats.win ? 'W' : 'L';
 				str += ' ('+(stats.championsKilled || 0)+'-'+(stats.numDeaths || 0)+'-'+(stats.assists || 0)+') ';
-				str += lol.champions[match.championId].name + ' ';
+				str += lol.champions[match.championId].name + ']';
 				str += '\n';
 				keyboard.push([str]);
 			});
@@ -67,14 +67,60 @@ bot.onText(/\/matches (.*)/, function(msg, match) {
 	});
 });
 
-bot.onText(/\/match ([0-9]+)[ ]?(.*)?/, function(msg, match) {
+bot.onText(/\/matchid ([0-9]+) \[([WL]) \(([0-9])+-([0-9])+-([0-9])+\) (.*)+\]/, function(msg, params) {
 	var fromId = msg.chat.id;
 	bot.sendChatAction(fromId, 'typing');
 	
-	var matchId = match[1];
+	var matchId = params[1],
+		matchOutcome = params[2],
+		matchKills = params[3],
+		matchDeaths = params[4],
+		matchAssists = params[5],
+		matchChamp = params[6];
+		
 	api.match.get('euw', matchId)
-	.then(function(res) { 
-		console.log(res);
+	.then(function(match) {
+		var matchTeamId =  _(match.teams).filter({winner: matchOutcome === 'W'}).first().teamId;
+		var main = _(match.participants).filter({
+			stats : {
+				kills: parseInt(matchKills),
+				deaths: parseInt(matchDeaths),
+				assists: parseInt(matchAssists)
+			},
+			championId : _(lol.champions).filter({name : matchChamp}).first().id
+		}).first();
+		var participants = _(match.participants).map(function(v, k) {
+			return {
+				team : v.teamId, 
+				champion : v.championId, 
+				score : v.stats.kills+'-'+v.stats.deaths+'-'+v.stats.assists 
+			}})
+		.partition({ team : matchTeamId}).value();
+		var duration = moment.duration(match.matchDuration, 'seconds');
+		var data = {
+			match : {
+				date : moment(match.matchCreation).fromNow(),
+				type : _(_(match.queueType.toLowerCase()).replace(/g_/g, ' ')).startCase(),
+				duration : duration.minutes() + ":" +duration.seconds(),
+				outcome : matchOutcome === 'W' ? "WIN" : "LOSS"
+			},
+			score : {
+				kills : main.stats.kills,
+				deaths : main.stats.deaths,
+				assists : main.stats.assists
+			},
+			largestMultikill : main.stats.largestMultikill,
+			spells : [lol.spells[main.spell1Id].key, lol.spells[main.spell2Id].key],
+			items : _(main.stats).pick((v, k) => /^item[0-5]/.test(k)).values().value(),
+			trinket : main.stats.item6,
+			wards :  main.stats.wardsPlaced,
+			creeps : main.stats.minionsKilled,
+			teams : {
+				allies : participants[0],
+				enemies : participants[1]
+			}
+		}
+		console.log(data);
 	});
 });
 
