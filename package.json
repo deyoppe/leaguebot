@@ -1,6 +1,6 @@
 {
   "name": "leaguebot",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "League of Legends bot for Telegram",
   "main": "leaguebot.js",
   "dependencies": {
