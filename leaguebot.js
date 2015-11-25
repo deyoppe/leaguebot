@@ -12,8 +12,6 @@ var lol = require('riot-lol-api');
 bot = new TelegramBot(tokens.telegram, {polling: true});
 api = lol.client(tokens.riot)
 
-require('./commands')(bot);
-
 bot.onText(/\/recent (.*)/, function(msg, match) {
 	var fromId = msg.chat.id;
 	bot.sendChatAction(fromId, 'typing');
