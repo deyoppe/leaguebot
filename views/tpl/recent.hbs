@@ -1,20 +1,31 @@
 <html>
-	{{> head}}
+	<head>
+		<link rel="stylesheet" type="text/css" href="../assets/css/custom.css">
+		<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
+		<script src="../assets/js/jquery-2.1.4.js"></script>
+		<script src="../assets/js/bootstrap.js"></script>
+	</head>
 	<body class="lol-match-summary">
 		<div class="panel panel-primary inline-block">
 			  <div class="panel-heading">
-					<h3 class="panel-title"><strong>Ranked</strong> - 3 days ago
-			  			<span class="pull-right">34:52 - LOSE</span>
+				{{#with match}}
+					<h3 class="panel-title"><strong>{{type}}</strong> - {{date}}
+			  			<span class="pull-right">{{duration}} - {{outcome}}</span>
 			  		</h3>
+				{{/with}}
 			  </div>
 			  <div class="panel-body">
-  				<img class="inline-block lol-champion-icon lol-icon-lg" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/champion/Draven.png"/>
+  				<img class="inline-block lol-champion-icon lol-icon-lg" src="https://ddragon.leagueoflegends.com/cdn/{{version}}/img/champion/{{champion}}.png"/>
 			  	<div class="inline-block lol-player-stats breathe-lg">
 			  		<h4>
 			  			<span>
 				  			<strong>{{champion}}</strong>
-				  			<span class="breathe text-success">{{kills}}</span>/<span class="breathe text-danger">{{deaths}}</span>/<span class="breathe">{{assists}}</span>
-				  			<span class="label label-danger">PENTAKILL</span>
+							{{#with score}}
+				  				<span class="breathe text-success">{{kills}}</span>/<span class="breathe text-danger">{{deaths}}</span>/<span class="breathe">{{assists}}</span>
+							{{/with}}
+							{{#if multikill}}
+				  				<span class="label label-danger">{{type}}</span>
+							{{/if}}
 				  		</span>
 				  		<span class="pull-right">
 				  			{{minions}} cs
@@ -22,33 +33,25 @@
 			  		</h4>
 			  		<div class="inline-block">
 					  	<div class="lol-summspells inline-block">
-					  		<div>
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/spell/SummonerFlash.png"/>
-				  			</div>
-			  				<div>
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/spell/SummonerFlash.png"/>
-				  			</div>
+							{{#each spells}}
+								<div>
+									<img class="lol-icon" src="https://ddragon.leagueoflegends.com/cdn/{{../version}}/img/spell/{{.}}.png"/>
+								</div>
+							{{/each}}
 					  	</div>
 			  			<div class="breathe-lg inline-block">
-			  				<div>
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  			</div>
-			  				<div>
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-					  			<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  			</div>
+					  		{{#each items}}
+							  <img class="lol-icon" src="https://ddragon.leagueoflegends.com/cdn/{{../version}}/img/item/{{.}}.png">
+							{{/each}}
 			  			</div>
 				  		<div class="inline-block">
 			  				<div>
-				  				<img class="lol-icon" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/3361.png">
+				  				<img class="lol-icon" src="https://ddragon.leagueoflegends.com/cdn/{{version}}/img/item/{{trinket}}.png">
 				  			</div>
 				  			<hr>
 			  				<div>
 			  					<div class="lol-icon text-center">
-						  			<img class="lol-icon-sm" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/2043.png"> 
+						  			<img class="lol-icon-sm" src="https://ddragon.leagueoflegends.com/cdn/{{version}}/img/item/2043.png"> 
 						  			<strong>2</strong>
 						  		</div>
 				  			</div>
@@ -61,26 +64,12 @@
 		  					<h4>Ally</h4>
 		  				</div>
 		  				<div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png"> 
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
+							{{#each teams.allies}}
+								<div>
+									<img class="lol-icon-xs" src="https://ddragon.leagueoflegends.com/cdn/{{../version}}/img/item/{{champion}}.png"> 
+									{{score}}
+								</div>
+							{{/each}}
 			  			</div>
 		  			</div>
 	  				<div class="inline-block breathe-lg">
@@ -88,26 +77,12 @@
 	  						<h4>Enemy</h4>
 	  					</div>
 	  					<div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
-				  			<div>
-				  				<img class="lol-icon-xs" src="//ddragon.leagueoflegends.com/cdn/{{version}}/img/item/1001.png">
-				  				10/10/10
-				  			</div>
+							{{#each teams.allies}}
+								<div>
+									<img class="lol-icon-xs" src="https://ddragon.leagueoflegends.com/cdn/{{../../version}}/img/item/{{champion}}.png"> 
+									{{score}}
+								</div>
+							{{/each}}
 			  			</div>
 		  			</div>
 			  	</div>

@@ -1,11 +1,13 @@
 /* global bot */
 /* global api */
+var fs = require('fs');
 var TelegramBot = require('node-telegram-bot-api');
 var tokens = require('./cfg/tokens');
 var emoji = require('node-emoji').emoji;
 var _ = require('lodash');
 var moment = require('moment');
 var handlebars = require('handlebars');
+var webshot = require('webshot');
 var lol = require('riot-lol-api');
 bot = new TelegramBot(tokens.telegram, {polling: true});
 api = lol.client(tokens.riot)
@@ -67,36 +69,44 @@ bot.onText(/\/match (.*)/, function(msg, match) {
 	});
 });
 
-bot.onText(/\/matchid ([0-9]+) \[([WL]) \(([0-9])+-([0-9])+-([0-9])+\) (.*)+\]/, function(msg, params) {
+var recentTpl = handlebars.compile(fs.readFileSync('./views/tpl/recent.hbs', 'UTF-8'));
+bot.onText(/\/matchid ([0-9]+) \[([WL]) \(([0-9]+)-([0-9]+)-([0-9]+)\) (.*)+\]/, function(msg, params) {
 	var fromId = msg.chat.id;
 	bot.sendChatAction(fromId, 'typing');
 	
 	var matchId = params[1],
 		matchOutcome = params[2],
-		matchKills = params[3],
-		matchDeaths = params[4],
-		matchAssists = params[5],
+		matchKills = parseInt(params[3]),
+		matchDeaths = parseInt(params[4]),
+		matchAssists = parseInt(params[5]),
 		matchChamp = params[6];
-		
+	
 	api.match.get('euw', matchId)
 	.then(function(match) {
-		var matchTeamId =  _(match.teams).filter({winner: matchOutcome === 'W'}).first().teamId;
-		var main = _(match.participants).filter({
-			stats : {
-				kills: parseInt(matchKills),
-				deaths: parseInt(matchDeaths),
-				assists: parseInt(matchAssists)
-			},
-			championId : _(lol.champions).filter({name : matchChamp}).first().id
-		}).first();
-		var participants = _(match.participants).map(function(v, k) {
-			return {
-				team : v.teamId, 
-				champion : v.championId, 
-				score : v.stats.kills+'-'+v.stats.deaths+'-'+v.stats.assists 
-			}})
-		.partition({ team : matchTeamId}).value();
-		var duration = moment.duration(match.matchDuration, 'seconds');
+		var matchTeamId =  _(match.teams).filter({winner: matchOutcome === 'W'}).first().teamId,
+			main = _(match.participants).filter({
+				stats : {
+					kills: matchKills !== 0 ? matchKills : undefined,
+					deaths: matchDeaths !== 0 ? matchDeaths : undefined,
+					assists: matchAssists !== 0 ? matchAssists : undefined
+				},
+				championId : _(lol.champions).filter({name : matchChamp}).first().id
+			}).first(),
+			participants = _(match.participants).map(function(v, k) {
+				return {
+					team : v.teamId, 
+					champion : v.championId, 
+					score : v.stats.kills+'-'+v.stats.deaths+'-'+v.stats.assists 
+				}})
+			.partition({ team : matchTeamId}).value(),
+			duration = moment.duration(match.matchDuration, 'seconds'),
+			multikillType = {
+				2 : "double",
+				3 : "triple",
+				4 : "quadra",
+				5 : "penta"
+			}[main.stats.largestMultikill];
+			
 		var data = {
 			match : {
 				date : moment(match.matchCreation).fromNow(),
@@ -109,18 +119,32 @@ bot.onText(/\/matchid ([0-9]+) \[([WL]) \(([0-9])+-([0-9])+-([0-9])+\) (.*)+\]/,
 				deaths : main.stats.deaths,
 				assists : main.stats.assists
 			},
-			largestMultikill : main.stats.largestMultikill,
+			champion : matchChamp,
+			multikill : multikillType ? {
+				type : multikillType,
+				quantity : main.stats[multikillType+"s"]
+			} : false,
 			spells : [lol.spells[main.spell1Id].key, lol.spells[main.spell2Id].key],
 			items : _(main.stats).pick((v, k) => /^item[0-5]/.test(k)).values().value(),
 			trinket : main.stats.item6,
 			wards :  main.stats.wardsPlaced,
-			creeps : main.stats.minionsKilled,
+			minions : main.stats.minionsKilled,
 			teams : {
 				allies : participants[0],
 				enemies : participants[1]
-			}
+			},
+			version : match.matchVersion.replace(/^([0-9]+\.[0-9]+\.)(.*?)$/g, '$11')
 		}
-		console.log(data);
+		var html = recentTpl(data);
+		var htmlFilepath = './renders/lol.html';
+		fs.writeFile(htmlFilepath, html, function() {
+			webshot(htmlFilepath, './renders/lol.jpg', {
+				siteType: 'file'
+				, defaultWhiteBackground: true
+			}, function() {
+				bot.sendPhoto(fromId, './renders/lol.jpg');
+			});		
+		})
 	});
 });
 
@@ -133,3 +157,4 @@ bot.onText(/\/cancel/, function(msg, match) {
 	});
 });
 
+console.log("Bot is running");
