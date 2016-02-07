@@ -67,7 +67,6 @@ bot.onText(/\/match (.*)/, function(msg, match) {
 	});
 });
 
-var recentTpl = handlebars.compile(fs.readFileSync('./views/tpl/recent.hbs', 'UTF-8'));
 bot.onText(/\/matchid ([0-9]+) \[([WL]) \(([0-9]+)-([0-9]+)-([0-9]+)\) (.*)+\]/, function(msg, params) {
 	var fromId = msg.chat.id;
 	bot.sendChatAction(fromId, 'typing');
@@ -133,16 +132,6 @@ bot.onText(/\/matchid ([0-9]+) \[([WL]) \(([0-9]+)-([0-9]+)-([0-9]+)\) (.*)+\]/,
 			},
 			version : match.matchVersion.replace(/^([0-9]+\.[0-9]+\.)(.*?)$/g, '$11')
 		}
-		var html = recentTpl(data);
-		var htmlFilepath = './renders/lol.html';
-		fs.writeFile(htmlFilepath, html, function() {
-			webshot(htmlFilepath, './renders/lol.jpg', {
-				siteType: 'file'
-				, defaultWhiteBackground: true
-			}, function() {
-				bot.sendPhoto(fromId, './renders/lol.jpg');
-			});		
-		})
 	});
 });
 
